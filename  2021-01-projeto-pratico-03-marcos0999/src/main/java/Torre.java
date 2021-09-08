@@ -5,6 +5,12 @@ public class Torre extends Unidade{
 
     @Override
     public boolean movimento(int x, int y) {
+        //verificando se o movimento é linear
+        if (((x-this.xAtual) == 0 & (y-this.yAtual) != 0) || ((x-this.xAtual) != 0 & (y-this.yAtual) == 0)){
+            this.xAtual = x;
+            this.yAtual = y;
+            return true;
+        }
         return false;
     }
 

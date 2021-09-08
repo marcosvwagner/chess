@@ -9,5 +9,4 @@ class TorreTest {
         Assertions.assertTrue(TorreTest.movimento(5,4),"torre movimenta em x ou y, sem limites de casas");
         Assertions.assertTrue(TorreTest.movimento(5,8));
     }
-
 }
