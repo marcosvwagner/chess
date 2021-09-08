@@ -6,7 +6,7 @@ public abstract class Unidade {
 
     public abstract boolean movimento(int x, int y);
 
-    public abstract boolean ataque();
+    public abstract boolean ataque(int x, int y);
 
     public Unidade(int xOrigem, int yOrigem) {
         this.xOrigem = xOrigem;

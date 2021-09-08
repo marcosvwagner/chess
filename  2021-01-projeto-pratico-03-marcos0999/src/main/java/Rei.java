@@ -6,7 +6,7 @@ public class Rei extends Unidade{
     }
 
     @Override
-    public boolean ataque() {
+    public boolean ataque(int x, int y) {
         return false;
     }
 

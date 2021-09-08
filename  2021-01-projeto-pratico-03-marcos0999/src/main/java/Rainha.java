@@ -1,6 +1,6 @@
-public class Bispo extends Unidade{
+public class Rainha extends Unidade{
 
-    public Bispo(int xOrigem, int yOrigem) {
+    public Rainha(int xOrigem, int yOrigem) {
         super(xOrigem, yOrigem);
     }
 
@@ -13,6 +13,4 @@ public class Bispo extends Unidade{
     public boolean ataque(int x, int y) {
         return false;
     }
-
-
 }
