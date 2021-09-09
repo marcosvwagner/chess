@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Tabuleiro {
-    ArrayList<Unidade> pretas = new ArrayList<>();
-    ArrayList<Unidade> brancas = new ArrayList<>();
+    private ArrayList<Unidade> pretas = new ArrayList<>();
+    private ArrayList<Unidade> brancas = new ArrayList<>();
 
 
     public void novoJogo(){
@@ -77,7 +77,9 @@ public class Tabuleiro {
         if (difX ==0 & difY ==0) return false;
 
         //se o movimento for diagonal
-        if (Math.abs(xDes - xOrig) == Math.abs(yDes - yOrig)) movdiagonal(xOrig, difX, yOrig, difY);
+        if (Math.abs(xDes - xOrig) == Math.abs(yDes - yOrig)){
+            movdiagonal(xOrig, difX, yOrig, difY);
+        }
 
         //se o movimento for linear
         else {
@@ -128,5 +130,13 @@ public class Tabuleiro {
             yOrig = yOrig + dirY;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Tabuleiro{" +
+                "pretas=" + pretas +
+                ", brancas=" + brancas +
+                '}';
     }
 }

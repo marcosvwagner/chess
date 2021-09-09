@@ -13,8 +13,38 @@ public class Peao extends Unidade{
 
     @Override
     public boolean movimento(int x, int y) {
-        usado = true;
-        return false;
+        if (!this.usado){
+            if (!cor){
+                if (x == this.xAtual & y == this.yAtual+1 || x == this.xAtual & y == this.yAtual+2){
+                    this.yAtual =y;
+                    usado = true;
+                    return true;
+                }
+            }
+            else {
+                if (x == this.xAtual & y == this.yAtual-1 || x == this.xAtual & y == this.yAtual-2){
+                    this.yAtual = y;
+                    usado = true;
+                    return true;
+                }
+            }
+            return false;
+        }
+        else {
+            if (!cor){
+                if (x == this.xAtual & y == this.yAtual+1){
+                    this.yAtual =y;
+                    return true;
+                }
+            }
+            else {
+                if (x == this.xAtual & y == this.yAtual-1){
+                    this.yAtual = y;
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     @Override
