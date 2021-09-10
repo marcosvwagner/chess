@@ -5,7 +5,7 @@ public class ReiTest {
 
     @Test
     public void movimentoTest(){
-        Rei reiTest = new Rei(4,4);
+        Rei reiTest = new Rei(4,4,false);
         Assertions.assertFalse(reiTest.movimento(6,4));
         Assertions.assertFalse(reiTest.movimento(5,6));
         Assertions.assertTrue(reiTest.movimento(5,4));

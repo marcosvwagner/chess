@@ -1,10 +1,28 @@
 import java.util.ArrayList;
 
+/**
+ * Classe que controla as peças do jogo, cria peças do jogo e confere e legalidade dos movimentos
+ */
 public class Tabuleiro {
     private ArrayList<Unidade> pretas = new ArrayList<>();
     private ArrayList<Unidade> brancas = new ArrayList<>();
 
 
+    public ArrayList<Unidade> getPretas() {
+        return pretas;
+    }
+
+    public ArrayList<Unidade> getBrancas() {
+        return brancas;
+    }
+
+    public Tabuleiro() {
+        novoJogo();
+    }
+
+    /**
+     * Metodo que limpa todas as peças atuais e cria novas peças
+     */
     public void novoJogo(){
         //limpando caso haja peças no jogo
         pretas.clear();
@@ -12,14 +30,14 @@ public class Tabuleiro {
 
         //brancas
         //primeira linha
-        brancas.add(new Torre(0,0));
-        brancas.add(new Cavalo(1,0));
-        brancas.add(new Bispo(2,0));
-        brancas.add(new Rainha(3,0));
-        brancas.add(new Rei(4,0));
-        brancas.add(new Bispo(5,0));
-        brancas.add(new Cavalo(6,0));
-        brancas.add(new Torre(7,0));
+        brancas.add(new Torre(0,0,false));
+        brancas.add(new Cavalo(1,0,false));
+        brancas.add(new Bispo(2,0,false));
+        brancas.add(new Rainha(3,0,false));
+        brancas.add(new Rei(4,0,false));
+        brancas.add(new Bispo(5,0,false));
+        brancas.add(new Cavalo(6,0,false));
+        brancas.add(new Torre(7,0,false));
 
         //peões
         brancas.add(new Peao(0,1,false));
@@ -33,14 +51,14 @@ public class Tabuleiro {
 
         //pretas
         //primeira linha
-        pretas.add(new Torre(0,7));
-        pretas.add(new Cavalo(1,7));
-        pretas.add(new Bispo(2,7));
-        pretas.add(new Rainha(3,7));
-        pretas.add(new Rei(4,7));
-        pretas.add(new Bispo(5,7));
-        pretas.add(new Cavalo(6,7));
-        pretas.add(new Torre(7,7));
+        pretas.add(new Torre(0,7,true));
+        pretas.add(new Cavalo(1,7,true));
+        pretas.add(new Bispo(2,7,true));
+        pretas.add(new Rainha(3,7,true));
+        pretas.add(new Rei(4,7,true));
+        pretas.add(new Bispo(5,7,true));
+        pretas.add(new Cavalo(6,7,true));
+        pretas.add(new Torre(7,7,true));
 
         //peões
         pretas.add(new Peao(0,6,true));
@@ -51,14 +69,34 @@ public class Tabuleiro {
         pretas.add(new Peao(5,6,true));
         pretas.add(new Peao(6,6,true));
         pretas.add(new Peao(7,6,true));
-
     }
 
-    public void movimentar(Unidade p, int x, int y){
-        if (verificaMov(p.getxAtual(), x, p.getyAtual(), y)) p.movimento(x,y);
+    /**
+     * Metodo chamado para movimentar uma peça
+     * verifica se o movimento é legal e usa a movimentação da peça
+     * @param p peça a ser movimentada
+     * @param x posição destino em X
+     * @param y posição destino em Y
+     */
+    public void movimentar(Unidade p, double x, double y){
+
+        if (p instanceof Cavalo){
+            if (movimentoValido(x, y)) p.movimento(x, y);
+        }
+        //chama o metodo para verificar a movimentação
+        if (verificaMov(p.getxAtual(), x, p.getyAtual(), y)) {
+            //chama o metodo da classe da peça para sua movimentação
+            p.movimento(x,y);
+        }
     }
 
-    public boolean movimentoValido (int x, int y){
+    /**
+     * Metodo que confere se há alguma unidade na posição que foi passada
+     * @param x coordenada X
+     * @param y coordenada Y
+     * @return true or false
+     */
+    public boolean movimentoValido (double x, double y){
         //TODO diferenciar peças aliadas e adversarias
         for (Unidade it: brancas) {
             if (x== it.xAtual & y== it.yAtual)return false;
@@ -69,63 +107,100 @@ public class Tabuleiro {
         return true;
     }
 
-    public boolean verificaMov(int xOrig,int xDes,int yOrig,int yDes){
-        int difX = (xDes-xOrig);
-        int difY = (yDes-yOrig);
+    /**
+     * Metodo para verificar a validade do movimento passado
+     * @param xOrig posição original em X
+     * @param xDes posição de destino em X
+     * @param yOrig posição original em Y
+     * @param yDes posição de destino em Y
+     * @return false or true
+     */
+    public boolean verificaMov(double xOrig, double xDes, double yOrig, double yDes){
+        double difX = (Math.floor(xDes)-xOrig);
+        double difY = (Math.floor(yDes)-yOrig);
 
         //verificando se há movimento
         if (difX ==0 & difY ==0) return false;
 
         //se o movimento for diagonal
-        if (Math.abs(xDes - xOrig) == Math.abs(yDes - yOrig)){
-            movdiagonal(xOrig, difX, yOrig, difY);
+        if (Math.abs(Math.floor(xDes) - xOrig) == Math.abs(Math.floor(yDes) - yOrig)){
+            return movdiagonal(xOrig, difX, yOrig, difY);
         }
 
         //se o movimento for linear
         else {
             //se for movimento em x
-            if (difX != 0) movX(xOrig, difX, yOrig);
+            if (difX != 0){
+                return movX(xOrig, difX, yOrig);
+            }
+
             //se for movimento em y
-            if (difY != 0) movY(yOrig, difY, xOrig);
+            return movY(yOrig, difY, xOrig);
+
         }
-        return true;
     }
 
 
-
-    private boolean movX(int xOrig, int difX, int yOrig) {
-        int quantMovX = Math.abs(difX);
-        int dirX = difX/quantMovX;
+    /**
+     * Metodo para movimentação de uma peça em direção X
+     * @param xOrig posição original em X
+     * @param difX diferença entre a nova posição e a posição original em X
+     * @param yOrig posioção original em Y
+     * @return false or true
+     */
+    private boolean movX(double xOrig, double difX, double yOrig) {
+        //variavel para saber a quantidade de movimentos da peça
+        double quantMovX = Math.abs(difX);
+        //variavel que vê a direção do movimento
+        double dirX = difX/quantMovX;
+        //laço para conmandar cada casa de movimentação para o metodo movimentoValido
         for (int i = 0; i < quantMovX; i++) {
-            if (movimentoValido(xOrig + dirX, yOrig)) return false;
+            if (!movimentoValido(xOrig + dirX, yOrig)) return false;
             xOrig += dirX;
         }
         return true;
     }
 
-    private boolean movY(int yOrig, int difY, int xOrig) {
-        int quantMovY = Math.abs(difY);
-        int dirY = difY/quantMovY;
+    /**
+     * Metodo para movimentação de uma peça em direção Y
+     * @param yOrig posição original em Y
+     * @param difY dposição original em Y
+     * @param xOrig posioção original em X
+     * @return false or true
+     */
+    private boolean movY(double yOrig, double difY, double xOrig) {
+        //variavel para saber a quantidade de movimentos da peça
+        double quantMovY = Math.abs(difY);
+        //variavel que vê a direção do movimento
+        double dirY = difY/quantMovY;
+        //laço para conmandar cada casa de movimentação para o metodo movimentoValido
         for (int i = 0; i < quantMovY; i++) {
-            if (movimentoValido(yOrig + dirY, xOrig)) return false;
+            if (!movimentoValido(xOrig,yOrig + dirY)) return false;
             yOrig += dirY;
         }
         return true;
     }
 
-    public boolean movdiagonal(int xOrig, int difX, int yOrig, int difY ) {
+    /**
+     * Metodo para movimentação de uma peça em diagonal
+     * @param xOrig posição original em Y
+     * @param difX posição original em X
+     * @param yOrig posioção original em X
+     * @param difY posição original em Y
+     * @return false or true
+     */
+    public boolean movdiagonal(double xOrig, double difX, double yOrig, double difY ) {
 
-        //verificando se há movimento
-        if (difX == 0 & difY == 0) return false;
+        //variavel para saber a quantidade de movimentos da peça
+        double quantMov = Math.abs(difX);
 
+        //variavel que vê a direção dos movimentos em X e Y
+        double dirX = difX / quantMov;
+        double dirY = difY / quantMov;
 
-        int quantMov = Math.abs(difX);
-
-        int dirX = difX / quantMov;
-        int dirY = difY / quantMov;
-
+        //laço para conmandar cada casa de movimentação para o metodo movimentoValido
         for (int i = 0; i < quantMov; i++) {
-            if (movimentoValido(xOrig + dirX, yOrig + dirY)) return false;
+            if (!movimentoValido(xOrig + dirX, yOrig + dirY)) return false;
             xOrig = xOrig + dirX;
             yOrig = yOrig + dirY;
         }
@@ -134,9 +209,9 @@ public class Tabuleiro {
 
     @Override
     public String toString() {
-        return "Tabuleiro{" +
+        return "Tabuleiro{\n" +
                 "pretas=" + pretas +
-                ", brancas=" + brancas +
-                '}';
+                "\nbrancas=" + brancas +
+                "\n}";
     }
 }

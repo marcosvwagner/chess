@@ -1,22 +1,23 @@
 public class Cavalo extends Unidade {
 
-    public Cavalo(int xOrigem, int yOrigem) {
-        super(xOrigem, yOrigem);
+
+    public Cavalo(double xOrigem, double yOrigem, boolean cor) {
+        super(xOrigem, yOrigem, cor);
     }
 
     @Override
-    public boolean movimento(int x, int y) {
+    public boolean movimento(double x, double y) {
         //verificando a movimentação em "L", vendo se uma cordenada varia 2 e outra 1
-        if ((Math.abs(x - this.xAtual) == 2 & Math.abs(y- this.yAtual) == 1) || (Math.abs(x - this.xAtual) == 1 & Math.abs(y- this.yAtual) == 2)){
-            this.xAtual = x;
-            this.yAtual = y;
+        if ((Math.abs(Math.floor(x) - this.xAtual) == 2 & Math.abs(Math.floor(y)- this.yAtual) == 1) || (Math.abs(Math.floor(x) - this.xAtual) == 1 & Math.abs(Math.floor(y)- this.yAtual) == 2)){
+            this.xAtual = Math.floor(x);
+            this.yAtual = Math.floor(y);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean ataque(int x, int y) {
+    public boolean ataque(double x, double y) {
         return false;
     }
 }

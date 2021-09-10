@@ -1,28 +1,27 @@
 public class Rei extends Unidade{
 
+
+    public Rei(double xOrigem, double yOrigem, boolean cor) {
+        super(xOrigem, yOrigem, cor);
+    }
+
     @Override
-    public boolean movimento(int x, int y) {
-        //verificando se o movimento é limitado a 1
-        if (x == this.xAtual+1 || y == this.yAtual+1){
-            //verificando se é linear ou diagonal
-            if(((x-this.xAtual) == 0 & (y-this.yAtual) != 0) || ((x-this.xAtual) != 0 & (y-this.yAtual) == 0) ||
-                    Math.abs(x - xAtual) == Math.abs(y - yAtual)){
-                this.xAtual = x;
-                this.yAtual = y;
-                return true;
-            }
+    public boolean movimento(double x, double y) {
+        //verificando se é linear ou diagonal
+        if((Math.abs(Math.floor(y) - this.yAtual)) == 1 & Math.abs(this.xAtual - Math.floor(x)) == 1 ||
+        Math.abs(Math.floor(x) - this.xAtual) == 1 && Math.floor(y) == this.yAtual || Math.abs(Math.floor(y) - this.yAtual) == 1 && Math.floor(x) == this.xAtual){
+            this.xAtual = Math.floor(x);
+            this.yAtual = Math.floor(y);
+            return true;
         }
-
         return false;
     }
 
     @Override
-    public boolean ataque(int x, int y) {
+    public boolean ataque(double x, double y) {
         return false;
     }
 
-    public Rei(int xOrigem, int yOrigem) {
-        super(xOrigem, yOrigem);
-    }
+
 
 }
