@@ -9,17 +9,21 @@ import java.awt.*;
  */
 public abstract class Unidade {
     protected double xAtual;
-    protected final double xOrigem;
     protected double yAtual;
-    protected final double yOrigem;
     protected boolean selecionado;
-    //false para branco, true para preto
-    protected boolean cor;
+    protected boolean cor;    //false para branco, true para preto
     protected final double movUnico =1;
-    String imagem;
+    protected final int movNulo =0;
+    protected String imagem;
 
+    /**
+     * Metodo abstrato movimento
+     * movimentos são diferentes para cada peça que herda de Unidade
+     * @param x coordenada X
+     * @param y coordenada Y
+     * @return true or false
+     */
     public abstract boolean movimento(double x, double y);
-
 
     public double getxAtual() {
         return xAtual;
@@ -55,12 +59,9 @@ public abstract class Unidade {
         this.selecionado = selecionado;
     }
 
-
     public Unidade(double xOrigem, double yOrigem, boolean cor, String imagem) {
-        this.xOrigem = Math.floor(xOrigem);
-        this.yOrigem = Math.floor(yOrigem);
-        this.xAtual = xOrigem;
-        this.yAtual = yOrigem;
+        this.xAtual = Math.floor(xOrigem);
+        this.yAtual = Math.floor(yOrigem);
         this.cor = cor;
         this.imagem = imagem;
     }

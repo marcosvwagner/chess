@@ -4,8 +4,7 @@ import edu.princeton.cs.algs4.DrawListener;
 import java.awt.*;
 
 /**
- * Pequeno exemplo para ilustrar a captura
- * de evento de clique do mouse
+ * Classe Principal onde é feito a parte grafica e clique do mouse
  */
 public class Principal implements DrawListener {
     private final int dimensao;
@@ -75,7 +74,7 @@ public class Principal implements DrawListener {
         for (Unidade branca : tabuleiro.getBrancas()){
             if ((Math.floor(x) == branca.getxAtual()) && (Math.floor(y) == branca.getyAtual())){
                 branca.marcaDesmarca();
-                System.out.println(branca.xAtual + " " + branca.yAtual +" "+ branca.getClass().getSimpleName() + " " + branca.isCor());
+                System.out.println(branca.xAtual + " " + branca.yAtual +" "+ branca.getClass().getSimpleName() + "-" + branca.isCor() + " Vez= " + tabuleiro.isVez());
             }else{
                 if (branca.isSelecionado()){
                     tabuleiro.movimentar(branca, x, y);
@@ -93,7 +92,7 @@ public class Principal implements DrawListener {
         for (Unidade preta : tabuleiro.getPretas()){
             if ((Math.floor(x) == preta.getxAtual()) && (Math.floor(y) == preta.getyAtual())){
                 preta.marcaDesmarca();
-                System.out.println(preta.xAtual + " " + preta.yAtual +" "+ preta.getClass().getSimpleName() + " " + preta.isCor());
+                System.out.println(preta.xAtual + " " + preta.yAtual +" "+ preta.getClass().getSimpleName() + "-" + preta.isCor() + " Vez= " + tabuleiro.isVez());
             }else{
                 if (preta.isSelecionado()){
                     tabuleiro.movimentar(preta, x, y);

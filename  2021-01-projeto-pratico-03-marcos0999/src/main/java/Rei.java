@@ -2,6 +2,10 @@ import edu.princeton.cs.algs4.Draw;
 
 import java.awt.*;
 
+/**
+ * Classe Rei
+ * herda de Unidade
+ */
 public class Rei extends Unidade{
 
 
@@ -9,6 +13,13 @@ public class Rei extends Unidade{
         super(xOrigem, yOrigem, cor, imagem);
     }
 
+    /**
+     * movimento do Rei
+     * qualquer direção, mas limitado a 1
+     * @param x coodenada X
+     * @param y coodenada Y
+     * @return true or false
+     */
     @Override
     public boolean movimento(double x, double y) {
         //verificando se é linear ou diagonal

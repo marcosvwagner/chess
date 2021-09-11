@@ -1,3 +1,7 @@
+/**
+ * Classe Peao
+ * herda de Unidade
+ */
 public class Peao extends Unidade{
 
     //atributo para conferir se o peão ja foi usado no jogo, se não foi, ele pode movimentar 2 casas em seu primeiro movimento
@@ -8,6 +12,14 @@ public class Peao extends Unidade{
     }
 
 
+    /**
+     * movimento do Peao
+     * diferencia pela cor da peça
+     * limitado a 2 se não usado, 1 se usado
+     * @param x coodenada X
+     * @param y coodenada Y
+     * @return true or false
+     */
     @Override
     public boolean movimento(double x, double y) {
         if (!this.usado){
@@ -45,6 +57,8 @@ public class Peao extends Unidade{
     }
 
     /**
+     * Ataque do Peao
+     * Peao só pode atacar em diagonal, limitado a 1
      * @param x coordenada x
      * @param y coordenada y
      * @return true or false

@@ -5,10 +5,15 @@ import java.util.ArrayList;
  * @author Marcos Vinicius Wagner
  */
 public class Tabuleiro {
+    private final int movNulo = 0;
     private final ArrayList<Unidade> pretas = new ArrayList<>();
     private final ArrayList<Unidade> brancas = new ArrayList<>();
     // verificar vez de cada jogador
     private boolean vez= false;
+
+    public boolean isVez() {
+        return vez;
+    }
 
     public ArrayList<Unidade> getPretas() {
         return pretas;
@@ -24,6 +29,7 @@ public class Tabuleiro {
 
     /**
      * Metodo que limpa todas as peças atuais e cria novas peças
+     * cada peça é criada em seu devido lugar e cor de acordo com as regras do Xadrez
      */
     public void novoJogo(){
         //limpando caso haja peças no jogo
@@ -87,17 +93,18 @@ public class Tabuleiro {
             //Verificando se o movimento é do cavalo
             if (p instanceof Cavalo){
                 if (movimentoDest(p, Math.floor(x), Math.floor(y))){
-                    p.movimento(x, y);
+                    //chama o metodo da classe Cavalo para sua movimentação e se movimentou, passa a vez para o outro jogador
+                    if (p.movimento(x, y)) vez = !vez;
+
                 }
             }
             //chama o metodo para verificar a movimentação
             if (verificaMov(p ,p.getxAtual(), x, p.getyAtual(), y)) {
-                //chama o metodo da classe da peça para sua movimentação
-                p.movimento(x,y);
+                //chama o metodo da classe da peça para sua movimentação e se movimentou, passa a vez para o outro jogador
+                if (p.movimento(x,y)) vez = !vez;
+
             }
         }
-        //passando a vez para outro jogador
-        vez = !vez;
     }
 
     /**
@@ -107,40 +114,46 @@ public class Tabuleiro {
      * @return true or false
      */
     public boolean movimentoValido (double x, double y){
-        //TODO diferenciar peças aliadas e adversarias
         for (Unidade it: brancas) {
             if (x== it.xAtual & y== it.yAtual) return false;
         }
         for (Unidade it: pretas) {
             if (x== it.xAtual & y== it.yAtual) return false;
         }
+        promoverPeao();
         return true;
     }
 
     /**
      * Metodo para verificar a ultima casa de um movimento
-     * possibilitando a eliminação de peãs adversarias
+     * possibilitando a eliminação de peças adversarias
      * @param p unidade se movimentando
      * @param x coordenada X
      * @param y coordenada Y
      * @return true or false
      */
     private boolean movimentoDest(Unidade p ,double x, double y) {
+        //se for peça branca
         if (!p.isCor()){
             for (Unidade it: brancas) {
                 if (x== it.xAtual & y== it.yAtual)return false;
             }
             for (Unidade it: pretas) {
+                //confere se há peça preta no destino
                 if (x== it.xAtual & y== it.yAtual) {
-
+                    //se it for peão, confere se ele pode usar seu ataque
                     if (p instanceof Peao){
                         if (((Peao) p).ataque(x,y)){
                             pretas.remove(it);
+                            vez = !vez;
+                            promoverPeao();
                             return true;
                         }else return false;
                     }
+                    //se sim, remove a peça preta de jogo
                     if (p.movimento(x, y)){
                         pretas.remove(it);
+                        promoverPeao();
                         return true;
                     }
 
@@ -153,15 +166,21 @@ public class Tabuleiro {
                 if (x== it.xAtual & y== it.yAtual)return false;
             }
             for (Unidade it: brancas) {
+                //confere se há peça branca no destino
                 if (x== it.xAtual & y== it.yAtual) {
+                    //se it for peão, confere se ele pode usar seu ataque
                     if (p instanceof Peao){
                         if (((Peao) p).ataque(x,y)){
                             brancas.remove(it);
+                            vez = !vez;
+                            promoverPeao();
                             return true;
                         }else return false;
                     }
+                    //se sim, remove a peça branca de jogo
                     if (p.movimento(x, y)){
                         brancas.remove(it);
+                        promoverPeao();
                         return true;
                     }
                 }
@@ -171,10 +190,17 @@ public class Tabuleiro {
         return true;
     }
 
+    /**
+     * Metodo para pormover peão
+     * se o peão esta em sua ultima casa possivel, se transoforma em uma Rainha
+     * Metodo é chamada ao fim de toda movimentacao
+     */
     private void promoverPeao() {
+        //laço que verifica se há algum peão em sua ultima casa
         for (Unidade it: brancas){
             if (it instanceof Peao){
                 if (it.getyAtual()== 7){
+                    //se sim, remove o peão e adiciona uma Rainha, no mesmo lugar e cor do Peão
                     brancas.remove(it);
                     brancas.add(new Rainha(it.getxAtual(),it.getyAtual(),false,"rainhaBranca.png"));
                 }
@@ -205,7 +231,7 @@ public class Tabuleiro {
         double difY = (Math.floor(yDes)-yOrig);
 
         //verificando se há movimento
-        if (difX ==0 & difY ==0) return false;
+        if (difX ==movNulo & difY ==movNulo) return false;
 
         //se o movimento for diagonal
         if (Math.abs(Math.floor(xDes) - xOrig) == Math.abs(Math.floor(yDes) - yOrig)){
@@ -215,7 +241,7 @@ public class Tabuleiro {
         //se o movimento for linear
         else {
             //se for movimento em x
-            if (difX != 0){
+            if (difX != movNulo){
                 return movX(p, xOrig, difX, yOrig);
             }
 
@@ -268,10 +294,10 @@ public class Tabuleiro {
         for (int i = 0; i < quantMovY; i++) {
             if (i == quantMovY-1){
                 if (!movimentoDest(p, xOrig, yOrig + dirY)) return false;
-                System.out.println("entrou");
             }
             else {
                 if (!movimentoValido(xOrig, yOrig + dirY)) return false;
+                //se a casa for permitida, incrementa para testar a proxima
                 yOrig += dirY;
             }
         }
@@ -310,8 +336,6 @@ public class Tabuleiro {
         }
         return true;
     }
-
-
 
     @Override
     public String toString() {

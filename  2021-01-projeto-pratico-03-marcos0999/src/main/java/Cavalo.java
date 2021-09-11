@@ -1,9 +1,20 @@
+/**
+ * Classe Cavalo
+ * herda de Unidade
+ */
 public class Cavalo extends Unidade {
 
     public Cavalo(double xOrigem, double yOrigem, boolean cor, String imagem) {
         super(xOrigem, yOrigem, cor, imagem);
     }
 
+    /**
+     * movimento do Cavalo
+     * em 'L'
+     * @param x coodenada X
+     * @param y coodenada Y
+     * @return true or false
+     */
     @Override
     public boolean movimento(double x, double y) {
         //verificando a movimentação em "L", vendo se uma cordenada varia 2 e outra 1
