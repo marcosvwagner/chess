@@ -1,8 +1,7 @@
 public class Cavalo extends Unidade {
 
-
-    public Cavalo(double xOrigem, double yOrigem, boolean cor) {
-        super(xOrigem, yOrigem, cor);
+    public Cavalo(double xOrigem, double yOrigem, boolean cor, String imagem) {
+        super(xOrigem, yOrigem, cor, imagem);
     }
 
     @Override

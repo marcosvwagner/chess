@@ -2,10 +2,11 @@ import java.util.ArrayList;
 
 /**
  * Classe que controla as peças do jogo, cria peças do jogo e confere e legalidade dos movimentos
+ * @author Marcos Vinicius Wagner
  */
 public class Tabuleiro {
-    private ArrayList<Unidade> pretas = new ArrayList<>();
-    private ArrayList<Unidade> brancas = new ArrayList<>();
+    private final ArrayList<Unidade> pretas = new ArrayList<>();
+    private final ArrayList<Unidade> brancas = new ArrayList<>();
     // verificar vez de cada jogador
     private boolean vez= false;
 
@@ -31,45 +32,45 @@ public class Tabuleiro {
 
         //brancas
         //primeira linha
-        brancas.add(new Torre(0,0,false));
-        brancas.add(new Cavalo(1,0,false));
-        brancas.add(new Bispo(2,0,false));
-        brancas.add(new Rainha(3,0,false));
-        brancas.add(new Rei(4,0,false));
-        brancas.add(new Bispo(5,0,false));
-        brancas.add(new Cavalo(6,0,false));
-        brancas.add(new Torre(7,0,false));
+        brancas.add(new Torre(0,0,false,"torreBranca.png"));
+        brancas.add(new Cavalo(1,0,false,"cavaloBranco.png"));
+        brancas.add(new Bispo(2,0,false,"bispoBranco.png"));
+        brancas.add(new Rainha(3,0,false,"rainhaBranca.png"));
+        brancas.add(new Rei(4,0,false,"reiBranco.png"));
+        brancas.add(new Bispo(5,0,false,"bispoBranco.png"));
+        brancas.add(new Cavalo(6,0,false,"cavaloBranco.png"));
+        brancas.add(new Torre(7,0,false,"torreBranca.png"));
 
         //peões
-        brancas.add(new Peao(0,1,false));
-        brancas.add(new Peao(1,1,false));
-        brancas.add(new Peao(2,1,false));
-        brancas.add(new Peao(3,1,false));
-        brancas.add(new Peao(4,1,false));
-        brancas.add(new Peao(5,1,false));
-        brancas.add(new Peao(6,1,false));
-        brancas.add(new Peao(7,1,false));
+        brancas.add(new Peao(0,1,false,"peaoBranco.png"));
+        brancas.add(new Peao(1,1,false,"peaoBranco.png"));
+        brancas.add(new Peao(2,1,false,"peaoBranco.png"));
+        brancas.add(new Peao(3,1,false,"peaoBranco.png"));
+        brancas.add(new Peao(4,1,false,"peaoBranco.png"));
+        brancas.add(new Peao(5,1,false,"peaoBranco.png"));
+        brancas.add(new Peao(6,1,false,"peaoBranco.png"));
+        brancas.add(new Peao(7,1,false,"peaoBranco.png"));
 
         //pretas
         //primeira linha
-        pretas.add(new Torre(0,7,true));
-        pretas.add(new Cavalo(1,7,true));
-        pretas.add(new Bispo(2,7,true));
-        pretas.add(new Rainha(3,7,true));
-        pretas.add(new Rei(4,7,true));
-        pretas.add(new Bispo(5,7,true));
-        pretas.add(new Cavalo(6,7,true));
-        pretas.add(new Torre(7,7,true));
+        pretas.add(new Torre(0,7,true,"torrePreta.png"));
+        pretas.add(new Cavalo(1,7,true,"cavaloPreto.png"));
+        pretas.add(new Bispo(2,7,true,"bispoPreto.png"));
+        pretas.add(new Rainha(3,7,true,"rainhapreta.png"));
+        pretas.add(new Rei(4,7,true,"reiPreto.png"));
+        pretas.add(new Bispo(5,7,true,"bispoPreto.png"));
+        pretas.add(new Cavalo(6,7,true,"cavaloPreto.png"));
+        pretas.add(new Torre(7,7,true,"torrePreta.png"));
 
         //peões
-        pretas.add(new Peao(0,6,true));
-        pretas.add(new Peao(1,6,true));
-        pretas.add(new Peao(2,6,true));
-        pretas.add(new Peao(3,6,true));
-        pretas.add(new Peao(4,6,true));
-        pretas.add(new Peao(5,6,true));
-        pretas.add(new Peao(6,6,true));
-        pretas.add(new Peao(7,6,true));
+        pretas.add(new Peao(0,6,true,"peaoPreto.png"));
+        pretas.add(new Peao(1,6,true,"peaoPreto.png"));
+        pretas.add(new Peao(2,6,true,"peaoPreto.png"));
+        pretas.add(new Peao(3,6,true,"peaoPreto.png"));
+        pretas.add(new Peao(4,6,true,"peaoPreto.png"));
+        pretas.add(new Peao(5,6,true,"peaoPreto.png"));
+        pretas.add(new Peao(6,6,true,"peaoPreto.png"));
+        pretas.add(new Peao(7,6,true,"peaoPreto.png"));
     }
 
     /**
@@ -175,7 +176,7 @@ public class Tabuleiro {
             if (it instanceof Peao){
                 if (it.getyAtual()== 7){
                     brancas.remove(it);
-                    brancas.add(new Rainha(it.getxAtual(),it.getyAtual(),false));
+                    brancas.add(new Rainha(it.getxAtual(),it.getyAtual(),false,"rainhaBranca.png"));
                 }
             }
         }
@@ -183,7 +184,7 @@ public class Tabuleiro {
             if (it instanceof Peao){
                 if (it.getyAtual()==0){
                     pretas.remove(it);
-                    brancas.add(new Rainha(it.getxAtual(), it.getyAtual(), true));
+                    brancas.add(new Rainha(it.getxAtual(), it.getyAtual(), true,"rainhapreta.png"));
                 }
             }
         }
@@ -220,7 +221,6 @@ public class Tabuleiro {
 
             //se for movimento em y
             return movY(p ,yOrig, difY, xOrig);
-
         }
     }
 
@@ -242,7 +242,6 @@ public class Tabuleiro {
         for (int i = 0; i < quantMovX; i++) {
             if (i == quantMovX-1){
                 if (!movimentoDest(p, xOrig +dirX, yOrig)) return false;
-                System.out.println("entrou");
             }
             else {
                 if (!movimentoValido(xOrig + dirX, yOrig)) return false;

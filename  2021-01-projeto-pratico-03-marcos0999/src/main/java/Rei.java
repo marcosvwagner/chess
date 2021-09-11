@@ -1,8 +1,12 @@
+import edu.princeton.cs.algs4.Draw;
+
+import java.awt.*;
+
 public class Rei extends Unidade{
 
 
-    public Rei(double xOrigem, double yOrigem, boolean cor) {
-        super(xOrigem, yOrigem, cor);
+    public Rei(double xOrigem, double yOrigem, boolean cor, String imagem) {
+        super(xOrigem, yOrigem, cor, imagem);
     }
 
     @Override
@@ -15,5 +19,15 @@ public class Rei extends Unidade{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void desenhar(Draw desenho){
+        if (selecionado){
+            Color cor = Color.RED;
+            desenho.setPenColor(cor);
+            desenho.square(xAtual + 0.5, yAtual + 0.5, .500);
+        }
+        desenho.picture(xAtual+0.5,yAtual+0.5,imagem);
     }
 }

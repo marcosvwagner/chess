@@ -1,8 +1,8 @@
 public class Torre extends Unidade{
 
 
-    public Torre(double xOrigem, double yOrigem, boolean cor) {
-        super(xOrigem, yOrigem, cor);
+    public Torre(double xOrigem, double yOrigem, boolean cor, String imagem) {
+        super(xOrigem, yOrigem, cor, imagem);
     }
 
     @Override

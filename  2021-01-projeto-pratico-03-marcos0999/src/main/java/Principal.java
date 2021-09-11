@@ -38,6 +38,7 @@ public class Principal implements DrawListener {
      */
     public void desenharTabuleiro(){
         draw.setPenColor(Color.BLUE);
+        draw.picture(4,4,"board.gif");
         for (int i = 0; i <= dimensao; i++) draw.line(i, 0, i, dimensao);
         for (int j = 0; j <= dimensao; j++) draw.line(0, j, dimensao, j);
     }

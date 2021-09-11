@@ -3,8 +3,8 @@ public class Peao extends Unidade{
     //atributo para conferir se o peão ja foi usado no jogo, se não foi, ele pode movimentar 2 casas em seu primeiro movimento
     private boolean usado = false;
 
-    public Peao(double xOrigem, double yOrigem, boolean cor) {
-        super(xOrigem, yOrigem, cor);
+    public Peao(double xOrigem, double yOrigem, boolean cor, String imagem) {
+        super(xOrigem, yOrigem, cor, imagem);
     }
 
 
