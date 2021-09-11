@@ -43,7 +43,7 @@ public class Principal implements DrawListener {
     }
 
     /**
-     * Faz o objeto círculo se desenhar na tela
+     * Faz oas peças se desenharem na tela
      */
     public void desenharUnidades(){
         for (Unidade branc: tabuleiro.getBrancas()){
@@ -55,7 +55,7 @@ public class Principal implements DrawListener {
     }
 
     /**
-     * Limpa a tela, desenha o tabuleiro e os círculos
+     * Limpa a tela, desenha o tabuleiro e as peças
      */
     public void desenharTela(){
         draw.clear(Color.LIGHT_GRAY);

@@ -13,10 +13,10 @@ public abstract class Unidade {
     protected boolean selecionado;
     //false para branco, true para preto
     protected boolean cor;
+    protected final double movUnico =1;
 
     public abstract boolean movimento(double x, double y);
 
-    public abstract boolean ataque(double x, double y);
 
     public double getxAtual() {
         return xAtual;

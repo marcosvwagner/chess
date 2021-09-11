@@ -12,14 +12,14 @@ public class Peao extends Unidade{
     public boolean movimento(double x, double y) {
         if (!this.usado){
             if (!cor){
-                if ((Math.floor(x) == this.xAtual) & (Math.floor(y) == this.yAtual+1) || (Math.floor(x) == this.xAtual) & (Math.floor(y) == this.yAtual+2)){
+                if ((Math.floor(x) == this.xAtual) & (Math.floor(y) == this.yAtual+movUnico) || (Math.floor(x) == this.xAtual) & (Math.floor(y) == this.yAtual+2)){
                     this.yAtual =Math.floor(y);
                     usado = true;
                     return true;
                 }
             }
             else {
-                if (Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual-1 || Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual-2){
+                if (Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual-movUnico || Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual-2){
                     this.yAtual = Math.floor(y);
                     usado = true;
                     return true;
@@ -29,13 +29,13 @@ public class Peao extends Unidade{
         }
         else {
             if (!cor){
-                if (Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual+1){
+                if (Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual+movUnico){
                     this.yAtual =Math.floor(y);
                     return true;
                 }
             }
             else {
-                if (Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual-1){
+                if (Math.floor(x) == this.xAtual & Math.floor(y) == this.yAtual-movUnico){
                     this.yAtual = Math.floor(y);
                     return true;
                 }
@@ -44,8 +44,32 @@ public class Peao extends Unidade{
         }
     }
 
-    @Override
+    /**
+     * @param x coordenada x
+     * @param y coordenada y
+     * @return true or false
+     */
     public boolean ataque(double x, double y) {
+        if (!cor){
+            if (Math.abs(Math.floor(x) - xAtual) == Math.abs(Math.floor(y) - yAtual)){
+                if ((Math.floor(x) == xAtual + movUnico || Math.floor(x) == xAtual - movUnico) & (Math.floor(y) == yAtual + movUnico)){
+                    this.xAtual = Math.floor(x);
+                    this.yAtual = Math.floor(y);
+                    if (!usado) usado = true;
+                    return true;
+                }
+            }
+        }else {
+            if (Math.abs(Math.floor(x) - xAtual) == Math.abs(Math.floor(y) - yAtual)){
+                if ((Math.floor(x) == xAtual + movUnico || Math.floor(x) == xAtual - movUnico) & (Math.floor(y) == yAtual - movUnico)) {
+                    this.xAtual = Math.floor(x);
+                    this.yAtual = Math.floor(y);
+                    if (!usado) usado = true;
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 }

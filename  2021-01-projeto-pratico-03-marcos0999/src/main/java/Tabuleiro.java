@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public class Tabuleiro {
     private ArrayList<Unidade> pretas = new ArrayList<>();
     private ArrayList<Unidade> brancas = new ArrayList<>();
-
+    // verificar vez de cada jogador
+    private boolean vez= false;
 
     public ArrayList<Unidade> getPretas() {
         return pretas;
@@ -80,14 +81,22 @@ public class Tabuleiro {
      */
     public void movimentar(Unidade p, double x, double y){
 
-        if (p instanceof Cavalo){
-            if (movimentoValido(x, y)) p.movimento(x, y);
+        //ordenando a vez de cada jogador
+        if ((!vez & !p.isCor()) || (vez & p.isCor())){
+            //Verificando se o movimento é do cavalo
+            if (p instanceof Cavalo){
+                if (movimentoDest(p, Math.floor(x), Math.floor(y))){
+                    p.movimento(x, y);
+                }
+            }
+            //chama o metodo para verificar a movimentação
+            if (verificaMov(p ,p.getxAtual(), x, p.getyAtual(), y)) {
+                //chama o metodo da classe da peça para sua movimentação
+                p.movimento(x,y);
+            }
         }
-        //chama o metodo para verificar a movimentação
-        if (verificaMov(p.getxAtual(), x, p.getyAtual(), y)) {
-            //chama o metodo da classe da peça para sua movimentação
-            p.movimento(x,y);
-        }
+        //passando a vez para outro jogador
+        vez = !vez;
     }
 
     /**
@@ -99,23 +108,98 @@ public class Tabuleiro {
     public boolean movimentoValido (double x, double y){
         //TODO diferenciar peças aliadas e adversarias
         for (Unidade it: brancas) {
-            if (x== it.xAtual & y== it.yAtual)return false;
+            if (x== it.xAtual & y== it.yAtual) return false;
         }
         for (Unidade it: pretas) {
-            if (x== it.xAtual & y== it.yAtual)return false;
+            if (x== it.xAtual & y== it.yAtual) return false;
         }
         return true;
     }
 
     /**
+     * Metodo para verificar a ultima casa de um movimento
+     * possibilitando a eliminação de peãs adversarias
+     * @param p unidade se movimentando
+     * @param x coordenada X
+     * @param y coordenada Y
+     * @return true or false
+     */
+    private boolean movimentoDest(Unidade p ,double x, double y) {
+        if (!p.isCor()){
+            for (Unidade it: brancas) {
+                if (x== it.xAtual & y== it.yAtual)return false;
+            }
+            for (Unidade it: pretas) {
+                if (x== it.xAtual & y== it.yAtual) {
+
+                    if (p instanceof Peao){
+                        if (((Peao) p).ataque(x,y)){
+                            pretas.remove(it);
+                            return true;
+                        }else return false;
+                    }
+                    if (p.movimento(x, y)){
+                        pretas.remove(it);
+                        return true;
+                    }
+
+                }
+            }
+        }
+
+        if (p.isCor()){
+            for (Unidade it: pretas) {
+                if (x== it.xAtual & y== it.yAtual)return false;
+            }
+            for (Unidade it: brancas) {
+                if (x== it.xAtual & y== it.yAtual) {
+                    if (p instanceof Peao){
+                        if (((Peao) p).ataque(x,y)){
+                            brancas.remove(it);
+                            return true;
+                        }else return false;
+                    }
+                    if (p.movimento(x, y)){
+                        brancas.remove(it);
+                        return true;
+                    }
+                }
+            }
+        }
+        promoverPeao();
+        return true;
+    }
+
+    private void promoverPeao() {
+        for (Unidade it: brancas){
+            if (it instanceof Peao){
+                if (it.getyAtual()== 7){
+                    brancas.remove(it);
+                    brancas.add(new Rainha(it.getxAtual(),it.getyAtual(),false));
+                }
+            }
+        }
+        for (Unidade it: pretas){
+            if (it instanceof Peao){
+                if (it.getyAtual()==0){
+                    pretas.remove(it);
+                    brancas.add(new Rainha(it.getxAtual(), it.getyAtual(), true));
+                }
+            }
+        }
+
+    }
+
+    /**
      * Metodo para verificar a validade do movimento passado
+     * @param p unidade se movimentando
      * @param xOrig posição original em X
      * @param xDes posição de destino em X
      * @param yOrig posição original em Y
      * @param yDes posição de destino em Y
      * @return false or true
      */
-    public boolean verificaMov(double xOrig, double xDes, double yOrig, double yDes){
+    public boolean verificaMov(Unidade p,double xOrig, double xDes, double yOrig, double yDes){
         double difX = (Math.floor(xDes)-xOrig);
         double difY = (Math.floor(yDes)-yOrig);
 
@@ -124,18 +208,18 @@ public class Tabuleiro {
 
         //se o movimento for diagonal
         if (Math.abs(Math.floor(xDes) - xOrig) == Math.abs(Math.floor(yDes) - yOrig)){
-            return movdiagonal(xOrig, difX, yOrig, difY);
+            return movdiagonal(p ,xOrig, difX, yOrig, difY);
         }
 
         //se o movimento for linear
         else {
             //se for movimento em x
             if (difX != 0){
-                return movX(xOrig, difX, yOrig);
+                return movX(p, xOrig, difX, yOrig);
             }
 
             //se for movimento em y
-            return movY(yOrig, difY, xOrig);
+            return movY(p ,yOrig, difY, xOrig);
 
         }
     }
@@ -143,53 +227,68 @@ public class Tabuleiro {
 
     /**
      * Metodo para movimentação de uma peça em direção X
+     * @param p unidade se movimentando
      * @param xOrig posição original em X
      * @param difX diferença entre a nova posição e a posição original em X
      * @param yOrig posioção original em Y
      * @return false or true
      */
-    private boolean movX(double xOrig, double difX, double yOrig) {
+    private boolean movX(Unidade p, double xOrig, double difX, double yOrig) {
         //variavel para saber a quantidade de movimentos da peça
         double quantMovX = Math.abs(difX);
         //variavel que vê a direção do movimento
         double dirX = difX/quantMovX;
-        //laço para conmandar cada casa de movimentação para o metodo movimentoValido
+        //laço para mandar cada casa de movimentação para o metodo movimentoValido
         for (int i = 0; i < quantMovX; i++) {
-            if (!movimentoValido(xOrig + dirX, yOrig)) return false;
-            xOrig += dirX;
+            if (i == quantMovX-1){
+                if (!movimentoDest(p, xOrig +dirX, yOrig)) return false;
+                System.out.println("entrou");
+            }
+            else {
+                if (!movimentoValido(xOrig + dirX, yOrig)) return false;
+                xOrig += dirX;
+            }
         }
         return true;
     }
 
     /**
      * Metodo para movimentação de uma peça em direção Y
+     * @param p unidade se movimentando
      * @param yOrig posição original em Y
      * @param difY dposição original em Y
      * @param xOrig posioção original em X
      * @return false or true
      */
-    private boolean movY(double yOrig, double difY, double xOrig) {
+    private boolean movY(Unidade p ,double yOrig, double difY, double xOrig) {
         //variavel para saber a quantidade de movimentos da peça
         double quantMovY = Math.abs(difY);
         //variavel que vê a direção do movimento
         double dirY = difY/quantMovY;
-        //laço para conmandar cada casa de movimentação para o metodo movimentoValido
+        //laço para mandar cada casa de movimentação para o metodo movimentoValido
         for (int i = 0; i < quantMovY; i++) {
-            if (!movimentoValido(xOrig,yOrig + dirY)) return false;
-            yOrig += dirY;
+            if (i == quantMovY-1){
+                if (!movimentoDest(p, xOrig, yOrig + dirY)) return false;
+                System.out.println("entrou");
+            }
+            else {
+                if (!movimentoValido(xOrig, yOrig + dirY)) return false;
+                yOrig += dirY;
+            }
         }
         return true;
     }
 
     /**
      * Metodo para movimentação de uma peça em diagonal
+     * @param p unidade se movimentando
      * @param xOrig posição original em Y
      * @param difX posição original em X
      * @param yOrig posioção original em X
      * @param difY posição original em Y
      * @return false or true
      */
-    public boolean movdiagonal(double xOrig, double difX, double yOrig, double difY ) {
+    public boolean movdiagonal(Unidade p,double xOrig, double difX, double yOrig, double difY ) {
 
         //variavel para saber a quantidade de movimentos da peça
         double quantMov = Math.abs(difX);
@@ -198,14 +297,22 @@ public class Tabuleiro {
         double dirX = difX / quantMov;
         double dirY = difY / quantMov;
 
-        //laço para conmandar cada casa de movimentação para o metodo movimentoValido
+        //laço para mandar cada casa de movimentação para o metodo movimentoValido
         for (int i = 0; i < quantMov; i++) {
-            if (!movimentoValido(xOrig + dirX, yOrig + dirY)) return false;
-            xOrig = xOrig + dirX;
-            yOrig = yOrig + dirY;
+            if (i == quantMov-1){
+                if (!movimentoDest(p, xOrig +dirX, yOrig + dirY)) return false;
+
+            }
+            else {
+                if (!movimentoValido(xOrig + dirX, yOrig + dirY)) return false;
+                xOrig = xOrig + dirX;
+                yOrig = yOrig + dirY;
+            }
         }
         return true;
     }
+
+
 
     @Override
     public String toString() {

@@ -16,9 +16,4 @@ public class Rainha extends Unidade{
         }
         return false;
     }
-
-    @Override
-    public boolean ataque(double x, double y) {
-        return false;
-    }
 }

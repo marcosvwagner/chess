@@ -22,4 +22,18 @@ class PeaoTest {
 
     }
 
+    @Test
+    void ataqueTest() {
+        Peao peaoTestBranco = new Peao(4,4,false);
+        Assertions.assertFalse(peaoTestBranco.ataque(4,5),"peão não ataca para frente");
+        Assertions.assertTrue(peaoTestBranco.ataque(5,5),"peão só ataca em diagonal");
+        Assertions.assertFalse(peaoTestBranco.ataque(4,4),"peão branco não ataca para tras");
+        Assertions.assertTrue(peaoTestBranco.ataque(4,6));
+
+        Peao peaoTestPreto = new Peao(4,4,true);
+        Assertions.assertFalse(peaoTestPreto.ataque(4,3),"peão não ataca para frente");
+        Assertions.assertTrue(peaoTestPreto.ataque(3,3),"peão só ataca em diagonal");
+        Assertions.assertFalse(peaoTestPreto.ataque(4,4),"peão preto não ataca para tras");
+        Assertions.assertTrue(peaoTestPreto.ataque(4,2));
+    }
 }
