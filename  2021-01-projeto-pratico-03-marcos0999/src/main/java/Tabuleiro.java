@@ -79,6 +79,12 @@ public class Tabuleiro {
         pretas.add(new Peao(7,6,true,"peaoPreto.png"));
     }
 
+    public void passaVez(Unidade p, double x, double y){
+        if (p.getyAtual()==Math.floor(y) & p.getxAtual()==Math.floor(x)){
+            vez = !vez;
+        }
+    }
+
     /**
      * Metodo chamado para movimentar uma peça
      * verifica se o movimento é legal e usa a movimentação da peça
@@ -94,14 +100,16 @@ public class Tabuleiro {
             if (p instanceof Cavalo){
                 if (movimentoDest(p, Math.floor(x), Math.floor(y))){
                     //chama o metodo da classe Cavalo para sua movimentação e se movimentou, passa a vez para o outro jogador
-                    if (p.movimento(x, y)) vez = !vez;
-
+                    p.movimento(x, y);
+                    passaVez(p, x, y);
                 }
+                else return;
             }
             //chama o metodo para verificar a movimentação
             if (verificaMov(p ,p.getxAtual(), x, p.getyAtual(), y)) {
                 //chama o metodo da classe da peça para sua movimentação e se movimentou, passa a vez para o outro jogador
-                if (p.movimento(x,y)) vez = !vez;
+                p.movimento(x,y);
+                passaVez(p, x, y);
 
             }
         }
@@ -145,7 +153,6 @@ public class Tabuleiro {
                     if (p instanceof Peao){
                         if (((Peao) p).ataque(x,y)){
                             pretas.remove(it);
-                            vez = !vez;
                             promoverPeao();
                             return true;
                         }else return false;
@@ -172,7 +179,6 @@ public class Tabuleiro {
                     if (p instanceof Peao){
                         if (((Peao) p).ataque(x,y)){
                             brancas.remove(it);
-                            vez = !vez;
                             promoverPeao();
                             return true;
                         }else return false;
@@ -187,6 +193,7 @@ public class Tabuleiro {
             }
         }
         promoverPeao();
+
         return true;
     }
 
