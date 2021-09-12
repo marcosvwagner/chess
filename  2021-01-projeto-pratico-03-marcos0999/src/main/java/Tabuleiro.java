@@ -235,7 +235,7 @@ public class Tabuleiro {
 
         //se o movimento for diagonal
         if (Math.abs(Math.floor(xDes) - xOrig) == Math.abs(Math.floor(yDes) - yOrig)){
-            return movdiagonal(p ,xOrig, difX, yOrig, difY);
+            return movDiagonal(p ,xOrig, difX, yOrig, difY);
         }
 
         //se o movimento for linear
@@ -313,7 +313,7 @@ public class Tabuleiro {
      * @param difY posição original em Y
      * @return false or true
      */
-    public boolean movdiagonal(Unidade p,double xOrig, double difX, double yOrig, double difY ) {
+    public boolean movDiagonal(Unidade p, double xOrig, double difX, double yOrig, double difY ) {
 
         //variavel para saber a quantidade de movimentos da peça
         double quantMov = Math.abs(difX);
